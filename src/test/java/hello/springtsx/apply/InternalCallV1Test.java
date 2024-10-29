@@ -42,7 +42,9 @@ public class InternalCallV1Test {
     }
 
     @Slf4j
+    @Transactional
     static class CallService{
+
         public void external(){
             log.info("external call");
             printTxInfo();
@@ -60,5 +62,4 @@ public class InternalCallV1Test {
             log.info("tx readOnly={}",readOnly);
         }
     }
-
 }

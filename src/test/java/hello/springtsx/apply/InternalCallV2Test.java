@@ -24,7 +24,9 @@ public class InternalCallV2Test {
 
     @Test
     void externalCallV2(){
+        //callService 객체 인스턴스
         callService.external();
+
     }
     @TestConfiguration//빈으로 등록 가능
     static class InternalCallV1Config{
@@ -43,12 +45,15 @@ public class InternalCallV2Test {
     @RequiredArgsConstructor
     static class CallService{
 
+        // 외부의 internalService로 주입받는다.
         private final InternalService internalService;
 
         public void external(){
             log.info("external call");
             printTxInfo();
-            internalService.internal();// 외부의 internalService로 주입받는다.
+            internalService.internal();
+            // internalService 트랜잭션 프록시이다. 트랜잭션 적용후,
+            // 실제 internalService객체 인스턴스의 메서드 호출
         }
 
         private void printTxInfo(){
