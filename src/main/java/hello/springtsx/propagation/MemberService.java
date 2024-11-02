@@ -28,8 +28,10 @@ public class MemberService {
         log.info("== logRepository 호출 종료 ==");
 
     }
+
     // DB로그 저장시 예외가 발생하면 예외를 복구한다.
     //별도의 트랜잭션은 설정하지 않음
+    @Transactional
     public void joinV2(String userName){
         Member member = new Member(userName);
         Log logMessage = new Log(userName);
