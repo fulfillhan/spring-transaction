@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.*;
 @SpringBootTest
 public class txBasicTest {
 
-    @Autowired  // 의존관계 주입 -  프록시가 주입된다.
+    @Autowired
     private BasicService basicService;
 
     @Test
@@ -29,8 +29,8 @@ public class txBasicTest {
 
     @Test
     void txTest(){
-        basicService.tx();
-        basicService.nonTx();
+        basicService.transaction();
+        basicService.nonTransaction();
     }
 
 
@@ -45,16 +45,16 @@ public class txBasicTest {
     static class BasicService{
 
         @Transactional
-        public void tx(){
-            log.info("call tx");
+        public void transaction(){
+            log.info("call transaction");
             //트랜잭션 활성여부 알 수 있다.
-            boolean txActive = TransactionSynchronizationManager.isActualTransactionActive();
-            log.info("tx active = {}",txActive);
+            boolean transactionActive = TransactionSynchronizationManager.isActualTransactionActive();
+            log.info("transaction active = {}",transactionActive);
         }
-        public void nonTx(){
-            log.info("call nonTx");
-            boolean txActive = TransactionSynchronizationManager.isActualTransactionActive();
-            log.info("tx active = {}",txActive);
+        public void nonTransaction(){
+            log.info("call nonTransaction");
+            boolean transactionActive = TransactionSynchronizationManager.isActualTransactionActive();
+            log.info("transaction active = {}",transactionActive);
         }
     }
 }
