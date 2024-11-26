@@ -10,27 +10,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 /*프록시 내부 호출 문제2 -> 별도의 클래스로 분리해서 생성한다. 내부호출을 외부호출로 변경한다.*/
-@SpringBootTest // 테스트 스프링 컨테이너 생성, 빈 등록 및 의존관계 주입 가능하다
+@SpringBootTest
 @Slf4j
-public class InternalCallV2Test {
+public class InternalCallProblemV2Test {
 
-    @Autowired // 의존관계주입
-    CallService callService;
+    @Autowired CallService callService;
 
-    @Test
-    void printProxy(){
-        log.info("callService class={}", callService.getClass());
-    }
-
-    @Test
-    void externalCallV2(){
-        //callService 객체 인스턴스
-        callService.external();
-
-    }
-    @TestConfiguration//빈으로 등록 가능
+    @TestConfiguration
     static class InternalCallV1Config{
-        @Bean //빈 등록
+        @Bean
         CallService callService(){
             return new CallService(internalService());
         }
@@ -40,20 +28,22 @@ public class InternalCallV2Test {
         }
 
     }
+    @Test
+    void externalCallV2(){
+        callService.external();
+
+    }
 
     @Slf4j
     @RequiredArgsConstructor
     static class CallService{
 
-        // 외부의 internalService로 주입받는다.
         private final InternalService internalService;
 
         public void external(){
             log.info("external call");
             printTxInfo();
             internalService.internal();
-            // internalService 트랜잭션 프록시이다. 트랜잭션 적용후,
-            // 실제 internalService객체 인스턴스의 메서드 호출
         }
 
         private void printTxInfo(){
